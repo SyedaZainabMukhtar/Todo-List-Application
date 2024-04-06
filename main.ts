@@ -11,29 +11,6 @@ console.log(chalk.bold.rgb(204, 204, 204)(`\n \t <<<<<<<<<<<====================
 console.log(chalk.bold.rgb(204, 204, 204)(`<<<========>>>  ${chalk.bold.bgHex(`#9999FF`)(`Welcome To Zainab - Todo-List Application`)} <<<=======>>>>`));
 console.log(chalk.bold.rgb(204, 204, 204)(`\t<<<<<<<<<<<==========================>>>>>>>>>>>>>\n`));
 
-
-// while(condition)
-// {
-//     let todoQuestion = await inquirer.prompt(
-// [
-//     {
-//         name:"firstQuestion",
-//         type: "input",
-//         message: chalk.redBright("What do you want to add in your todo?"),
-//     },
-//     {
-//         name:"secondQuestion",
-//         type:"confirm",
-//         message:chalk.redBright("Do you want to add more?"),
-//         default:"true"
-//     }
-// ]
-// );
-// todos.push(todoQuestion.firstQuestion);
-// console.log(todos)
-// condition = todoQuestion.secondQuestion
-// }
-
 let main = async() => {
     while(condition){
         let option = await inquirer.prompt([
@@ -41,7 +18,7 @@ let main = async() => {
                 name: "choice",
                 type: "list",
                 message: "Select an option you want to do:",
-                choices:[ "Add task", "Delete task", "View Todo-List", "Exit"]
+                choices:[ "Add task", "Delete task", "Update task", "View Todo-List", "Exit"],
 
             }
         ]);
@@ -50,6 +27,9 @@ let main = async() => {
         }
         else if (option.choice === "Delete task"){
             await DeleteTask()
+        }
+        else if (option.choice === "Update task"){
+            await UpdateTask()
         }
         else if(option.choice ==="View Todo-List" ){
             await viewTask ()
@@ -90,8 +70,25 @@ let DeleteTask = async() => {
             message:"Enter the 'Index no' you want to delete:",
         }    
     ]);
-    let DeleteTask = todos.splice(taskIndex.index, 1);
+    let DeleteTask = todos.splice(taskIndex.index , 1);
     console.log(`\n ${DeleteTask}, this task has been deleted successfully from your Todo-List`)
 }
 
+let UpdateTask = async () => {
+    await viewTask ()
+    let Update_task_index = await inquirer.prompt([
+        {
+            name:"index",
+            type: "number",
+            message:"enter the 'index number' of the task you want to updae:"
+        },
+        {
+            name:"new_task",
+            type: "input",
+            message:"Now enter new task name:"
+        }
+    ]);
+    todos[Update_task_index.index] = Update_task_index.new_task
+    console.log(`\n Task at index number ${Update_task_index.index } updated successfully [for updated list check option: "View Todos-list"]`);
+}
 main();
